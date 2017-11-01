@@ -1,4 +1,4 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import org.junit.Assert;
 import org.junit.Test;

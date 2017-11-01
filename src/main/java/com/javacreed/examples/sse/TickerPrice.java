@@ -1,12 +1,15 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
+
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Preconditions;
 
 /**
  * TODO: Add currency support
  */
+@Immutable
 public class TickerPrice extends BigDecimalBasedDomainObject {
 
   public static TickerPrice of(final BigDecimal value) {

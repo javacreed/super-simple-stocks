@@ -1,18 +1,17 @@
-package com.javacreed.examples.sse.formula;
+package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Preconditions;
-import com.javacreed.examples.sse.model.BigDecimalBasedDomainObject;
-import com.javacreed.examples.sse.model.FixedDivident;
-import com.javacreed.examples.sse.model.LastDivident;
-import com.javacreed.examples.sse.model.ParValue;
-import com.javacreed.examples.sse.model.TickerPrice;
 
-public class DividendYield {
+@Immutable
+public class DividendYield extends BigDecimalBasedDomainObject {
 
-  public static class Common extends BigDecimalBasedDomainObject {
+  @Immutable
+  public static class Common extends DividendYield {
 
     private final LastDivident divident;
     private final TickerPrice price;
@@ -32,7 +31,8 @@ public class DividendYield {
     }
   }
 
-  public static class Preferred extends BigDecimalBasedDomainObject {
+  @Immutable
+  public static class Preferred extends DividendYield {
     private final FixedDivident divident;
     private final ParValue parValue;
     private final TickerPrice price;
@@ -80,5 +80,7 @@ public class DividendYield {
     return new Preferred(divident, parValue, price, value);
   }
 
-  private DividendYield() {}
+  private DividendYield(final BigDecimal value) {
+    super(value);
+  }
 }

@@ -1,4 +1,4 @@
-package com.javacreed.examples.sse.formula;
+package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,12 +7,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.javacreed.examples.sse.formula.DividendYield.Common;
-import com.javacreed.examples.sse.formula.DividendYield.Preferred;
-import com.javacreed.examples.sse.model.FixedDivident;
-import com.javacreed.examples.sse.model.LastDivident;
-import com.javacreed.examples.sse.model.ParValue;
-import com.javacreed.examples.sse.model.TickerPrice;
+import com.javacreed.examples.sse.DividendYield.Common;
+import com.javacreed.examples.sse.DividendYield.Preferred;
 
 public class DividendYieldTest {
 

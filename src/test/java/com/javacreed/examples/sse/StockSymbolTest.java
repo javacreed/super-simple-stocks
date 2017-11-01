@@ -1,4 +1,4 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

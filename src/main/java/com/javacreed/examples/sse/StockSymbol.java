@@ -1,9 +1,12 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import java.util.regex.Pattern;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Preconditions;
 
+@Immutable
 public class StockSymbol implements Comparable<StockSymbol> {
 
   private static final Pattern REGEX = Pattern.compile("^[A-Z]{1,6}$");

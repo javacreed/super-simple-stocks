@@ -1,4 +1,4 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 public enum Type {
 

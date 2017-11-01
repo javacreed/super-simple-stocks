@@ -1,9 +1,12 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Preconditions;
 
+@Immutable
 public class ParValue extends BigDecimalBasedDomainObject {
 
   public static ParValue of(final BigDecimal value) {

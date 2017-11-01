@@ -1,8 +1,11 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import javax.annotation.concurrent.Immutable;
+
+@Immutable
 public class BigDecimalBasedDomainObject implements Comparable<BigDecimalBasedDomainObject> {
 
   private final BigDecimal value;

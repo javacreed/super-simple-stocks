@@ -1,9 +1,12 @@
-package com.javacreed.examples.sse.model;
+package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
 
+import javax.annotation.concurrent.Immutable;
+
 import com.google.common.base.Preconditions;
 
+@Immutable
 public class LastDivident extends BigDecimalBasedDomainObject {
 
   public static LastDivident of(final BigDecimal value) throws NullPointerException, IllegalArgumentException {
