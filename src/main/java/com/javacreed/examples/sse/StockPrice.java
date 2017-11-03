@@ -10,7 +10,7 @@ public class StockPrice extends BigDecimalBasedDomainObject {
 
   private static final StockPrice ZERO = new StockPrice(BigDecimal.ZERO);
 
-  public static StockPrice calculate(final Iterable<Trade> trades) throws NullPointerException {
+  public static StockPrice compute(final Iterable<Trade> trades) throws NullPointerException {
     Preconditions.checkNotNull(trades);
 
     /* TODO: Should we read this from properties or parameter? */

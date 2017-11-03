@@ -7,7 +7,7 @@ import com.google.common.base.Preconditions;
 @Immutable
 public class Quantity implements Comparable<Quantity> {
 
-  public static Quantity of(final int value) throws IllegalAccessError {
+  public static Quantity of(final int value) throws IllegalArgumentException {
     Preconditions.checkArgument(value > 0);
     Preconditions.checkArgument(value < 1000); /* TODO: is there an upper limit? */
 

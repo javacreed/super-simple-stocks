@@ -6,31 +6,20 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * TODO: Should we use the {@link TradeRequest} instead the individual fields?
+ */
 @Immutable
 public class Trade implements Comparable<Trade> {
 
-  public static Trade buy(final LocalDateTime time, final Quantity quantity, final Price price)
-      throws NullPointerException {
-    Preconditions.checkNotNull(time);
-    Preconditions.checkNotNull(quantity);
-    Preconditions.checkNotNull(price);
-    return new Trade(time, quantity, TradeType.BUY, price);
+  public static Trade buy(final TradeRequest request) throws NullPointerException {
+    Preconditions.checkNotNull(request);
+    return new Trade(request.getTime(), request.getQuantity(), TradeType.BUY, request.getPrice());
   }
 
-  public static Trade buy(final Quantity quantity, final Price price) throws NullPointerException {
-    return Trade.buy(LocalDateTime.now(), quantity, price);
-  }
-
-  public static Trade sell(final LocalDateTime time, final Quantity quantity, final Price price)
-      throws NullPointerException {
-    Preconditions.checkNotNull(time);
-    Preconditions.checkNotNull(quantity);
-    Preconditions.checkNotNull(price);
-    return new Trade(time, quantity, TradeType.SELL, price);
-  }
-
-  public static Trade sell(final Quantity quantity, final Price price) throws NullPointerException {
-    return Trade.sell(LocalDateTime.now(), quantity, price);
+  public static Trade sell(final TradeRequest request) throws NullPointerException {
+    Preconditions.checkNotNull(request);
+    return new Trade(request.getTime(), request.getQuantity(), TradeType.SELL, request.getPrice());
   }
 
   private final LocalDateTime time;
@@ -51,42 +40,18 @@ public class Trade implements Comparable<Trade> {
   }
 
   @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
+  public boolean equals(final Object object) {
+    if (this == object) {
       return true;
     }
-    if (obj == null) {
-      return false;
+
+    if (object != null && getClass() == object.getClass()) {
+      final Trade other = (Trade) object;
+      return type.equals(other.type) && time.equals(other.time) && quantity.equals(other.quantity)
+          && price.equals(other.price);
     }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    final Trade other = (Trade) obj;
-    if (price == null) {
-      if (other.price != null) {
-        return false;
-      }
-    } else if (!price.equals(other.price)) {
-      return false;
-    }
-    if (quantity == null) {
-      if (other.quantity != null) {
-        return false;
-      }
-    } else if (!quantity.equals(other.quantity)) {
-      return false;
-    }
-    if (time == null) {
-      if (other.time != null) {
-        return false;
-      }
-    } else if (!time.equals(other.time)) {
-      return false;
-    }
-    if (type != other.type) {
-      return false;
-    }
-    return true;
+
+    return false;
   }
 
   public Price getPrice() {
@@ -109,10 +74,10 @@ public class Trade implements Comparable<Trade> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (price == null ? 0 : price.hashCode());
-    result = prime * result + (quantity == null ? 0 : quantity.hashCode());
-    result = prime * result + (time == null ? 0 : time.hashCode());
-    result = prime * result + (type == null ? 0 : type.hashCode());
+    result = prime * result + price.hashCode();
+    result = prime * result + quantity.hashCode();
+    result = prime * result + time.hashCode();
+    result = prime * result + type.hashCode();
     return result;
   }
 

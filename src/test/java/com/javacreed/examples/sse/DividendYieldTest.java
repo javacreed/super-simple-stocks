@@ -15,7 +15,7 @@ public class DividendYieldTest {
   @Test
   public void computeCommon() {
     final List<String[]> list = new ArrayList<>();
-    list.add(new String[] { "8", "100.61", "0.0795" });
+    list.add(new String[] { "8", "100.61", "0.079515" });
 
     for (int i = 0, size = list.size(); i < size; i++) {
       final String[] values = list.get(i);
