@@ -1,46 +1,26 @@
 package com.javacreed.examples.sse;
 
-import javax.annotation.concurrent.Immutable;
+import java.math.BigDecimal;
 
-import org.joda.money.Money;
+import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.Preconditions;
 
 @Immutable
-public class Price {
+public class Price extends BigDecimalBasedDomainObject {
 
-  public static Price of(final Money value) throws NullPointerException, IllegalAccessException {
+  public static Price of(final BigDecimal value) throws NullPointerException, IllegalArgumentException {
     Preconditions.checkNotNull(value);
-    Preconditions.checkArgument(value.isPositive());
+    Preconditions.checkArgument(value.compareTo(BigDecimal.ZERO) > 0);
     return new Price(value);
   }
 
-  private final Money value;
-
-  private Price(final Money value) {
-    this.value = value;
+  public static Price of(final String value) throws NullPointerException, IllegalArgumentException {
+    Preconditions.checkNotNull(value);
+    return Price.of(new BigDecimal(value));
   }
 
-  @Override
-  public boolean equals(final Object object) {
-    if (this == object) {
-      return true;
-    }
-
-    if (object != null && getClass() == object.getClass()) {
-      return value.equals(((Price) object).value);
-    }
-
-    return false;
-  }
-
-  @Override
-  public int hashCode() {
-    return value.hashCode();
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
+  private Price(final BigDecimal value) {
+    super(value);
   }
 }

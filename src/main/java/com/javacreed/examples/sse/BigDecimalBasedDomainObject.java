@@ -8,7 +8,7 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 public class BigDecimalBasedDomainObject implements Comparable<BigDecimalBasedDomainObject> {
 
-  private final BigDecimal value;
+  protected final BigDecimal value;
 
   /**
    * {@link BigDecimal} takes into consideration the scale in equality and hash code computation. In order to simplify

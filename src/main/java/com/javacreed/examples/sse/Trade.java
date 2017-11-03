@@ -4,8 +4,34 @@ import java.time.LocalDateTime;
 
 import javax.annotation.concurrent.Immutable;
 
+import com.google.common.base.Preconditions;
+
 @Immutable
 public class Trade implements Comparable<Trade> {
+
+  public static Trade buy(final LocalDateTime time, final Quantity quantity, final Price price)
+      throws NullPointerException {
+    Preconditions.checkNotNull(time);
+    Preconditions.checkNotNull(quantity);
+    Preconditions.checkNotNull(price);
+    return new Trade(time, quantity, TradeType.BUY, price);
+  }
+
+  public static Trade buy(final Quantity quantity, final Price price) throws NullPointerException {
+    return Trade.buy(LocalDateTime.now(), quantity, price);
+  }
+
+  public static Trade sell(final LocalDateTime time, final Quantity quantity, final Price price)
+      throws NullPointerException {
+    Preconditions.checkNotNull(time);
+    Preconditions.checkNotNull(quantity);
+    Preconditions.checkNotNull(price);
+    return new Trade(time, quantity, TradeType.SELL, price);
+  }
+
+  public static Trade sell(final Quantity quantity, final Price price) throws NullPointerException {
+    return Trade.sell(LocalDateTime.now(), quantity, price);
+  }
 
   private final LocalDateTime time;
   private final Quantity quantity;

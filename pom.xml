@@ -132,11 +132,12 @@
 			<artifactId>guava</artifactId>
 			<version>23.0</version>
 		</dependency>
-		<dependency>
+		<!-- Will include this later on -->
+		<!-- <dependency>
 			<groupId>org.joda</groupId>
 			<artifactId>joda-money</artifactId>
 			<version>0.12</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>junit</groupId>
