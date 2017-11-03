@@ -7,30 +7,50 @@ import javax.annotation.concurrent.Immutable;
 import com.google.common.base.Preconditions;
 
 /**
- * TODO: Should we use the {@link TradeRequest} instead the individual fields?
+ * TODO: Should we use the {@link TradeParameters} instead the individual fields?
  */
 @Immutable
 public class Trade implements Comparable<Trade> {
 
-  public static Trade buy(final TradeRequest request) throws NullPointerException {
-    Preconditions.checkNotNull(request);
-    return new Trade(request.getTime(), request.getQuantity(), TradeType.BUY, request.getPrice());
+  public static class Buy extends Trade {
+
+    public static Buy of(final TradeParameters parameters) {
+      Preconditions.checkNotNull(parameters);
+      return new Buy(parameters.getTime(), parameters.getQuantity(), parameters.getPrice());
+    }
+
+    private Buy(final LocalDateTime time, final Quantity quantity, final Price price) {
+      super(time, quantity, price);
+    }
   }
 
-  public static Trade sell(final TradeRequest request) throws NullPointerException {
-    Preconditions.checkNotNull(request);
-    return new Trade(request.getTime(), request.getQuantity(), TradeType.SELL, request.getPrice());
+  public static class Sell extends Trade {
+
+    public static Sell of(final TradeParameters parameters) {
+      Preconditions.checkNotNull(parameters);
+      return new Sell(parameters.getTime(), parameters.getQuantity(), parameters.getPrice());
+    }
+
+    private Sell(final LocalDateTime time, final Quantity quantity, final Price price) {
+      super(time, quantity, price);
+    }
+  }
+
+  public static Buy buy(final TradeParameters parameters) throws NullPointerException {
+    return Buy.of(parameters);
+  }
+
+  public static Sell sell(final TradeParameters parameters) throws NullPointerException {
+    return Sell.of(parameters);
   }
 
   private final LocalDateTime time;
   private final Quantity quantity;
-  private final TradeType type;
   private final Price price;
 
-  private Trade(final LocalDateTime time, final Quantity quantity, final TradeType type, final Price price) {
+  protected Trade(final LocalDateTime time, final Quantity quantity, final Price price) {
     this.time = time;
     this.quantity = quantity;
-    this.type = type;
     this.price = price;
   }
 
@@ -47,8 +67,7 @@ public class Trade implements Comparable<Trade> {
 
     if (object != null && getClass() == object.getClass()) {
       final Trade other = (Trade) object;
-      return type.equals(other.type) && time.equals(other.time) && quantity.equals(other.quantity)
-          && price.equals(other.price);
+      return time.equals(other.time) && quantity.equals(other.quantity) && price.equals(other.price);
     }
 
     return false;
@@ -66,23 +85,20 @@ public class Trade implements Comparable<Trade> {
     return time;
   }
 
-  public TradeType getType() {
-    return type;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + getClass().hashCode();
     result = prime * result + price.hashCode();
     result = prime * result + quantity.hashCode();
     result = prime * result + time.hashCode();
-    result = prime * result + type.hashCode();
     return result;
   }
 
   @Override
   public String toString() {
-    return "Trade [time=" + time + ", quantity=" + quantity + ", type=" + type + ", price=" + price + "]";
+    return " Trade [time=" + time + ", quantity=" + quantity + ", type=" + getClass().getName() + ", price=" + price
+        + "]";
   }
 }

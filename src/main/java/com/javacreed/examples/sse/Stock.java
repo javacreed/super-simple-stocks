@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import com.google.common.base.Preconditions;
+import com.javacreed.examples.sse.Trade.Buy;
+import com.javacreed.examples.sse.Trade.Sell;
 
 @NotThreadSafe
 public abstract class Stock implements Iterable<Trade> {
@@ -89,8 +91,8 @@ public abstract class Stock implements Iterable<Trade> {
     this.symbol = symbol;
   }
 
-  public Trade buy(final TradeRequest request) throws NullPointerException {
-    return trade(Trade.buy(request));
+  public Buy buy(final TradeParameters parameters) throws NullPointerException {
+    return trade(Trade.buy(parameters));
   }
 
   /* TODO: Should we have the TickerPrice saved as part of the state or should we have it as a parameter (as is)? */
@@ -136,15 +138,15 @@ public abstract class Stock implements Iterable<Trade> {
     return immutableTrades.iterator();
   }
 
-  public Trade sell(final TradeRequest request) throws NullPointerException {
-    return trade(Trade.sell(request));
+  public Sell sell(final TradeParameters parameters) throws NullPointerException {
+    return trade(Trade.sell(parameters));
   }
 
   public int size() {
     return trades.size();
   }
 
-  private Trade trade(final Trade trade) throws NullPointerException {
+  private <T extends Trade> T trade(final T trade) throws NullPointerException {
     trades.add(trade);
     return trade;
   }

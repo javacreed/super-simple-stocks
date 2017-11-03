@@ -20,7 +20,7 @@ public class BigDecimalBasedDomainObject implements Comparable<BigDecimalBasedDo
   protected BigDecimalBasedDomainObject(final BigDecimal value) {
     this.value = value;
     /* TODO: should we fix the scale or should we leave that to the caller? */
-    hashCode = value.setScale(2, RoundingMode.HALF_UP).hashCode();
+    hashCode = value.setScale(6, RoundingMode.HALF_UP).hashCode();
   }
 
   @Override

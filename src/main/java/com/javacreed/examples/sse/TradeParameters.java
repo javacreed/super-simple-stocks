@@ -7,32 +7,32 @@ import javax.annotation.concurrent.Immutable;
 import com.google.common.base.Preconditions;
 
 @Immutable
-public class TradeRequest implements Comparable<TradeRequest> {
+public class TradeParameters implements Comparable<TradeParameters> {
 
-  public static TradeRequest of(final LocalDateTime time, final Quantity quantity, final Price price)
+  public static TradeParameters of(final LocalDateTime time, final Quantity quantity, final Price price)
       throws NullPointerException {
     Preconditions.checkNotNull(time);
     Preconditions.checkNotNull(quantity);
     Preconditions.checkNotNull(price);
-    return new TradeRequest(time, quantity, price);
+    return new TradeParameters(time, quantity, price);
   }
 
-  public static TradeRequest of(final Quantity quantity, final Price price) throws NullPointerException {
-    return TradeRequest.of(LocalDateTime.now(), quantity, price);
+  public static TradeParameters of(final Quantity quantity, final Price price) throws NullPointerException {
+    return TradeParameters.of(LocalDateTime.now(), quantity, price);
   }
 
   private final LocalDateTime time;
   private final Quantity quantity;
   private final Price price;
 
-  private TradeRequest(final LocalDateTime time, final Quantity quantity, final Price price) {
+  private TradeParameters(final LocalDateTime time, final Quantity quantity, final Price price) {
     this.time = time;
     this.quantity = quantity;
     this.price = price;
   }
 
   @Override
-  public int compareTo(final TradeRequest other) {
+  public int compareTo(final TradeParameters other) {
     return time.compareTo(other.time);
   }
 
@@ -43,7 +43,7 @@ public class TradeRequest implements Comparable<TradeRequest> {
     }
 
     if (object != null && getClass() == object.getClass()) {
-      final TradeRequest other = (TradeRequest) object;
+      final TradeParameters other = (TradeParameters) object;
       return time.equals(other.time) && quantity.equals(other.quantity) && price.equals(other.price);
     }
 
