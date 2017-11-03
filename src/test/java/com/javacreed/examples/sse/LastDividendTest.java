@@ -3,12 +3,12 @@ package com.javacreed.examples.sse;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LastDividentTest {
+public class LastDividendTest {
 
   @Test
   public void equalityIgnoreScale() {
-    final LastDivident a = LastDivident.of("1");
-    final LastDivident b = LastDivident.of("1.00");
+    final LastDividend a = LastDividend.of("1");
+    final LastDividend b = LastDividend.of("1.00");
 
     Assert.assertEquals(a, b);
     Assert.assertEquals(b, a);

@@ -1,6 +1,7 @@
 package com.javacreed.examples.sse;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -12,7 +13,13 @@ public class PeRatio extends BigDecimalBasedDomainObject {
   public static PeRatio compute(final TickerPrice price, final DividendYield dividend) throws NullPointerException {
     Preconditions.checkNotNull(price);
     Preconditions.checkNotNull(dividend);
-    final BigDecimal value = price.getValue().setScale(4).divide(dividend.getValue());
+
+    if (price.isZero() | dividend.isZero()) {
+      return new PeRatio(price, dividend, BigDecimal.ZERO);
+    }
+
+    final BigDecimal value = price.getValue().setScale(6, RoundingMode.HALF_UP).divide(dividend.getValue(),
+        RoundingMode.HALF_UP);
     return new PeRatio(price, dividend, value);
   }
 

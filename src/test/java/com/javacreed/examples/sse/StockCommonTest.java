@@ -7,24 +7,37 @@ import org.junit.Test;
 
 public class StockCommonTest {
 
-  private static DividendYield.Common computeAndAssert(final Stock.Common stock, final TickerPrice price,
+  private static PeRatio computePeRatioAndAssert(final Stock.Common stock, final TickerPrice price,
+      final BigDecimal expected) {
+    Assert.assertNotNull(stock);
+    Assert.assertNotNull(price);
+
+    final PeRatio peRatio = stock.computePeRatio(price);
+    AssertUtils.assertEquals("a PE ratio", expected, peRatio);
+    Assert.assertSame(price, peRatio.getPrice());
+    Assert.assertEquals(stock.computeDividendYield(price), peRatio.getDividend());
+
+    return peRatio;
+  }
+
+  private static DividendYield.Common computeYieldAndAssert(final Stock.Common stock, final TickerPrice price,
       final BigDecimal expected) {
     Assert.assertNotNull(stock);
     Assert.assertNotNull(price);
 
     final DividendYield.Common yield = stock.computeDividendYield(price);
-    AssertUtils.assertEquals("a divident yeild", expected, yield);
+    AssertUtils.assertEquals("a dividend yeild", expected, yield);
     Assert.assertSame(price, yield.getPrice());
-    Assert.assertSame(stock.getDivident(), yield.getDivident());
+    Assert.assertSame(stock.getDividend(), yield.getDividend());
 
     return yield;
   }
 
   @Test
-  public void dividentAndManyTrade() {
+  public void dividendAndManyTrade() {
     final StockSymbol symbol = StockSymbol.of("ZDAMT");
-    final LastDivident divident = LastDivident.of("8");
-    final Stock.Common stock = Stock.common(symbol, divident);
+    final LastDividend dividend = LastDividend.of("8");
+    final Stock.Common stock = Stock.common(symbol, dividend);
     stock.buy(TradeRequest.of(Quantity.of(10), Price.of("15.45")));
     stock.buy(TradeRequest.of(Quantity.of(5), Price.of("16.21")));
     stock.buy(TradeRequest.of(Quantity.of(35), Price.of("15.19")));
@@ -34,36 +47,40 @@ public class StockCommonTest {
     Assert.assertFalse(stock.isEmpty());
     Assert.assertEquals(3, stock.size());
 
-    Assert.assertSame(divident, stock.getDivident());
+    Assert.assertSame(dividend, stock.getDividend());
     AssertUtils.assertEquals("a geometric mean", new BigDecimal("15.610726"), stock.computeGeometricMean());
     AssertUtils.assertEquals("a stock", new BigDecimal("15.344"), stock.computeStockPrice());
 
-    StockCommonTest.computeAndAssert(stock, TickerPrice.of("15.45"), new BigDecimal("0.517799"));
+    final TickerPrice price = TickerPrice.of("15.45");
+    StockCommonTest.computeYieldAndAssert(stock, price, new BigDecimal("0.517799"));
+    StockCommonTest.computePeRatioAndAssert(stock, price, new BigDecimal("29.837833"));
   }
 
   @Test
-  public void dividentAndNotTrade() {
+  public void dividendAndNotTrade() {
     final StockSymbol symbol = StockSymbol.of("DANT");
-    final LastDivident divident = LastDivident.of("8");
-    final Stock.Common stock = Stock.common(symbol, divident);
+    final LastDividend dividend = LastDividend.of("8");
+    final Stock.Common stock = Stock.common(symbol, dividend);
 
     Assert.assertNotNull(stock);
     Assert.assertSame(symbol, stock.getSymbol());
     Assert.assertTrue(stock.isEmpty());
     Assert.assertEquals(0, stock.size());
 
-    Assert.assertSame(divident, stock.getDivident());
+    Assert.assertSame(dividend, stock.getDividend());
     Assert.assertSame(GeometricMean.zero(), stock.computeGeometricMean());
     Assert.assertSame(StockPrice.zero(), stock.computeStockPrice());
 
-    StockCommonTest.computeAndAssert(stock, TickerPrice.of("15.45"), new BigDecimal("0.517799"));
+    final TickerPrice price = TickerPrice.of("15.45");
+    StockCommonTest.computeYieldAndAssert(stock, price, new BigDecimal("0.517799"));
+    StockCommonTest.computePeRatioAndAssert(stock, price, new BigDecimal("29.837833"));
   }
 
   @Test
-  public void dividentAndSingleTrade() {
+  public void dividendAndSingleTrade() {
     final StockSymbol symbol = StockSymbol.of("DAST");
-    final LastDivident divident = LastDivident.of("8");
-    final Stock.Common stock = Stock.common(symbol, divident);
+    final LastDividend dividend = LastDividend.of("8");
+    final Stock.Common stock = Stock.common(symbol, dividend);
     stock.buy(TradeRequest.of(Quantity.of(1), Price.of("15.45")));
 
     Assert.assertNotNull(stock);
@@ -71,18 +88,20 @@ public class StockCommonTest {
     Assert.assertFalse(stock.isEmpty());
     Assert.assertEquals(1, stock.size());
 
-    Assert.assertSame(divident, stock.getDivident());
+    Assert.assertSame(dividend, stock.getDividend());
     AssertUtils.assertEquals("a geometric mean", new BigDecimal("15.45"), stock.computeGeometricMean());
     AssertUtils.assertEquals("a stock", new BigDecimal("15.45"), stock.computeStockPrice());
 
-    StockCommonTest.computeAndAssert(stock, TickerPrice.of("15.45"), new BigDecimal("0.517799"));
+    final TickerPrice price = TickerPrice.of("15.45");
+    StockCommonTest.computeYieldAndAssert(stock, price, new BigDecimal("0.517799"));
+    StockCommonTest.computePeRatioAndAssert(stock, price, new BigDecimal("29.837833"));
   }
 
   @Test
-  public void zeroDividentAndManyTrade() {
+  public void zeroDividendAndManyTrade() {
     final StockSymbol symbol = StockSymbol.of("ZDAMT");
-    final LastDivident divident = LastDivident.zero();
-    final Stock.Common stock = Stock.common(symbol, divident);
+    final LastDividend dividend = LastDividend.zero();
+    final Stock.Common stock = Stock.common(symbol, dividend);
     stock.buy(TradeRequest.of(Quantity.of(10), Price.of("15.45")));
     stock.buy(TradeRequest.of(Quantity.of(5), Price.of("16.21")));
     stock.buy(TradeRequest.of(Quantity.of(35), Price.of("15.19")));
@@ -92,36 +111,38 @@ public class StockCommonTest {
     Assert.assertFalse(stock.isEmpty());
     Assert.assertEquals(3, stock.size());
 
-    Assert.assertSame(divident, stock.getDivident());
+    Assert.assertSame(dividend, stock.getDividend());
     AssertUtils.assertEquals("a geometric mean", new BigDecimal("15.610726"), stock.computeGeometricMean());
     AssertUtils.assertEquals("a stock", new BigDecimal("15.344"), stock.computeStockPrice());
 
-    StockCommonTest.computeAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
+    StockCommonTest.computeYieldAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
+    StockCommonTest.computePeRatioAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
   }
 
   @Test
-  public void zeroDividentAndNotTrade() {
+  public void zeroDividendAndNotTrade() {
     final StockSymbol symbol = StockSymbol.of("ZDANT");
-    final LastDivident divident = LastDivident.zero();
-    final Stock.Common stock = Stock.common(symbol, divident);
+    final LastDividend dividend = LastDividend.zero();
+    final Stock.Common stock = Stock.common(symbol, dividend);
 
     Assert.assertNotNull(stock);
     Assert.assertSame(symbol, stock.getSymbol());
     Assert.assertTrue(stock.isEmpty());
     Assert.assertEquals(0, stock.size());
 
-    Assert.assertSame(divident, stock.getDivident());
+    Assert.assertSame(dividend, stock.getDividend());
     Assert.assertSame(GeometricMean.zero(), stock.computeGeometricMean());
     Assert.assertSame(StockPrice.zero(), stock.computeStockPrice());
 
-    StockCommonTest.computeAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
+    StockCommonTest.computeYieldAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
+    StockCommonTest.computePeRatioAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
   }
 
   @Test
-  public void zeroDividentAndSingleTrade() {
+  public void zeroDividendAndSingleTrade() {
     final StockSymbol symbol = StockSymbol.of("ZDAST");
-    final LastDivident divident = LastDivident.zero();
-    final Stock.Common stock = Stock.common(symbol, divident);
+    final LastDividend dividend = LastDividend.zero();
+    final Stock.Common stock = Stock.common(symbol, dividend);
     stock.buy(TradeRequest.of(Quantity.of(1), Price.of("15.45")));
 
     Assert.assertNotNull(stock);
@@ -129,10 +150,11 @@ public class StockCommonTest {
     Assert.assertFalse(stock.isEmpty());
     Assert.assertEquals(1, stock.size());
 
-    Assert.assertSame(divident, stock.getDivident());
+    Assert.assertSame(dividend, stock.getDividend());
     AssertUtils.assertEquals("a geometric mean", new BigDecimal("15.45"), stock.computeGeometricMean());
     AssertUtils.assertEquals("a stock", new BigDecimal("15.45"), stock.computeStockPrice());
 
-    StockCommonTest.computeAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
+    StockCommonTest.computeYieldAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
+    StockCommonTest.computePeRatioAndAssert(stock, TickerPrice.random(), BigDecimal.ZERO);
   }
 }

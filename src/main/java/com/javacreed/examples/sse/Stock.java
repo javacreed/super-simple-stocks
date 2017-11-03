@@ -15,54 +15,54 @@ public abstract class Stock implements Iterable<Trade> {
 
   public static class Common extends Stock {
 
-    private static Common of(final StockSymbol symbol, final LastDivident divident) {
+    private static Common of(final StockSymbol symbol, final LastDividend dividend) {
       Preconditions.checkNotNull(symbol);
-      Preconditions.checkNotNull(divident);
-      return new Common(symbol, divident);
+      Preconditions.checkNotNull(dividend);
+      return new Common(symbol, dividend);
     }
 
-    private final LastDivident divident;
+    private final LastDividend dividend;
 
-    private Common(final StockSymbol symbol, final LastDivident divident) {
+    private Common(final StockSymbol symbol, final LastDividend dividend) {
       super(symbol);
-      this.divident = divident;
+      this.dividend = dividend;
     }
 
     @Override
-    public DividendYield.Common computeDividendYield(final TickerPrice tickerPrice) {
-      return DividendYield.computeCommon(divident, tickerPrice);
+    public DividendYield.Common computeDividendYield(final TickerPrice price) {
+      return DividendYield.computeCommon(dividend, price);
     }
 
-    public LastDivident getDivident() {
-      return divident;
+    public LastDividend getDividend() {
+      return dividend;
     }
   }
 
   public static class Preferred extends Stock {
 
-    private static Preferred of(final StockSymbol symbol, final FixedDivident divident, final ParValue parValue) {
+    private static Preferred of(final StockSymbol symbol, final FixedDividend dividend, final ParValue parValue) {
       Preconditions.checkNotNull(symbol);
-      Preconditions.checkNotNull(divident);
+      Preconditions.checkNotNull(dividend);
       Preconditions.checkNotNull(parValue);
-      return new Preferred(symbol, divident, parValue);
+      return new Preferred(symbol, dividend, parValue);
     }
 
-    private final FixedDivident divident;
+    private final FixedDividend dividend;
     private final ParValue parValue;
 
-    private Preferred(final StockSymbol symbol, final FixedDivident divident, final ParValue parValue) {
+    private Preferred(final StockSymbol symbol, final FixedDividend dividend, final ParValue parValue) {
       super(symbol);
-      this.divident = divident;
+      this.dividend = dividend;
       this.parValue = parValue;
     }
 
     @Override
-    public DividendYield.Preferred computeDividendYield(final TickerPrice tickerPrice) {
-      return DividendYield.computePreferred(divident, parValue, tickerPrice);
+    public DividendYield.Preferred computeDividendYield(final TickerPrice price) {
+      return DividendYield.computePreferred(dividend, parValue, price);
     }
 
-    public FixedDivident getDivident() {
-      return divident;
+    public FixedDividend getDividend() {
+      return dividend;
     }
 
     public ParValue getParValue() {
@@ -70,13 +70,13 @@ public abstract class Stock implements Iterable<Trade> {
     }
   }
 
-  public static Common common(final StockSymbol symbol, final LastDivident divident) throws NullPointerException {
-    return Common.of(symbol, divident);
+  public static Common common(final StockSymbol symbol, final LastDividend dividend) throws NullPointerException {
+    return Common.of(symbol, dividend);
   }
 
-  public static Preferred preferred(final StockSymbol symbol, final FixedDivident divident, final ParValue parValue)
+  public static Preferred preferred(final StockSymbol symbol, final FixedDividend dividend, final ParValue parValue)
       throws NullPointerException {
-    return Preferred.of(symbol, divident, parValue);
+    return Preferred.of(symbol, dividend, parValue);
   }
 
   private final StockSymbol symbol;
@@ -98,6 +98,14 @@ public abstract class Stock implements Iterable<Trade> {
 
   public GeometricMean computeGeometricMean() {
     return GeometricMean.compute(trades.stream().map(Trade::getPrice).collect(Collectors.toList()));
+  }
+
+  public PeRatio computePeRatio(final TickerPrice price) {
+    /*
+     * TODO: Need to verify the denominator to be used in this formula. I was not able to understand this from the
+     * document
+     */
+    return PeRatio.compute(price, computeDividendYield(price));
   }
 
   public StockPrice computeStockPrice() {

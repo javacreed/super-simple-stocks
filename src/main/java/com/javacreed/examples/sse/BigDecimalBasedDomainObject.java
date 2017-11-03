@@ -50,6 +50,15 @@ public class BigDecimalBasedDomainObject implements Comparable<BigDecimalBasedDo
     return hashCode;
   }
 
+  /**
+   * Returns <code>true</code> if the value is zero, <code>false</code> otherwise
+   *
+   * @return <code>true</code> if the value is zero, <code>false</code> otherwise
+   */
+  public boolean isZero() {
+    return BigDecimal.ZERO.compareTo(value) == 0;
+  }
+
   @Override
   public String toString() {
     return String.valueOf(value);

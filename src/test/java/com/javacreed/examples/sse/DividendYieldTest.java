@@ -20,14 +20,14 @@ public class DividendYieldTest {
     for (int i = 0, size = list.size(); i < size; i++) {
       final String[] values = list.get(i);
 
-      final LastDivident divident = LastDivident.of(values[0]);
+      final LastDividend dividend = LastDividend.of(values[0]);
       final TickerPrice price = TickerPrice.of(values[1]);
       final BigDecimal value = new BigDecimal(values[2]);
 
-      final Common common = DividendYield.computeCommon(divident, price);
+      final Common common = DividendYield.computeCommon(dividend, price);
       Assert.assertNotNull(common);
       Assert.assertEquals(value, common.getValue());
-      Assert.assertEquals(divident, common.getDivident());
+      Assert.assertEquals(dividend, common.getDividend());
       Assert.assertEquals(price, common.getPrice());
     }
   }
@@ -40,15 +40,15 @@ public class DividendYieldTest {
     for (int i = 0, size = list.size(); i < size; i++) {
       final String[] values = list.get(i);
 
-      final FixedDivident divident = FixedDivident.of(values[0]);
+      final FixedDividend dividend = FixedDividend.of(values[0]);
       final ParValue parValue = ParValue.of(values[1]);
       final TickerPrice price = TickerPrice.of(values[2]);
       final BigDecimal value = new BigDecimal(values[3]);
 
-      final Preferred preferred = DividendYield.computePreferred(divident, parValue, price);
+      final Preferred preferred = DividendYield.computePreferred(dividend, parValue, price);
       Assert.assertNotNull(preferred);
       Assert.assertEquals(value, preferred.getValue());
-      Assert.assertEquals(divident, preferred.getDivident());
+      Assert.assertEquals(dividend, preferred.getDividend());
       Assert.assertEquals(parValue, preferred.getParValue());
       Assert.assertEquals(price, preferred.getPrice());
     }

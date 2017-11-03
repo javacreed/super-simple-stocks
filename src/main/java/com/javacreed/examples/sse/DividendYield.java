@@ -13,27 +13,27 @@ public class DividendYield extends BigDecimalBasedDomainObject {
   @Immutable
   public static class Common extends DividendYield {
 
-    private static Common compute(final LastDivident divident, final TickerPrice price) throws NullPointerException {
-      Preconditions.checkNotNull(divident);
+    private static Common compute(final LastDividend dividend, final TickerPrice price) throws NullPointerException {
+      Preconditions.checkNotNull(dividend);
       Preconditions.checkNotNull(price);
 
       /* TODO: check the rounding mechanism to be used */
-      final BigDecimal value = divident.getValue().setScale(6, RoundingMode.HALF_UP).divide(price.getValue(),
+      final BigDecimal value = dividend.getValue().setScale(6, RoundingMode.HALF_UP).divide(price.getValue(),
           RoundingMode.HALF_UP);
-      return new Common(divident, price, value);
+      return new Common(dividend, price, value);
     }
 
-    private final LastDivident divident;
+    private final LastDividend dividend;
     private final TickerPrice price;
 
-    private Common(final LastDivident divident, final TickerPrice price, final BigDecimal value) {
+    private Common(final LastDividend dividend, final TickerPrice price, final BigDecimal value) {
       super(value);
-      this.divident = divident;
+      this.dividend = dividend;
       this.price = price;
     }
 
-    public LastDivident getDivident() {
-      return divident;
+    public LastDividend getDividend() {
+      return dividend;
     }
 
     public TickerPrice getPrice() {
@@ -44,32 +44,32 @@ public class DividendYield extends BigDecimalBasedDomainObject {
   @Immutable
   public static class Preferred extends DividendYield {
 
-    private static Preferred compute(final FixedDivident divident, final ParValue parValue, final TickerPrice price)
+    private static Preferred compute(final FixedDividend dividend, final ParValue parValue, final TickerPrice price)
         throws NullPointerException {
-      Preconditions.checkNotNull(divident);
+      Preconditions.checkNotNull(dividend);
       Preconditions.checkNotNull(parValue);
       Preconditions.checkNotNull(price);
 
       /* TODO: check the rounding mechanism to be used */
-      final BigDecimal value = divident.getValue().multiply(parValue.getValue()).setScale(4, RoundingMode.HALF_UP)
+      final BigDecimal value = dividend.getValue().multiply(parValue.getValue()).setScale(4, RoundingMode.HALF_UP)
           .divide(price.getValue(), RoundingMode.HALF_UP);
-      return new Preferred(divident, parValue, price, value);
+      return new Preferred(dividend, parValue, price, value);
     }
 
-    private final FixedDivident divident;
+    private final FixedDividend dividend;
     private final ParValue parValue;
     private final TickerPrice price;
 
-    private Preferred(final FixedDivident divident, final ParValue parValue, final TickerPrice price,
+    private Preferred(final FixedDividend dividend, final ParValue parValue, final TickerPrice price,
         final BigDecimal value) {
       super(value);
-      this.divident = divident;
+      this.dividend = dividend;
       this.parValue = parValue;
       this.price = price;
     }
 
-    public FixedDivident getDivident() {
-      return divident;
+    public FixedDividend getDividend() {
+      return dividend;
     }
 
     public ParValue getParValue() {
@@ -81,13 +81,13 @@ public class DividendYield extends BigDecimalBasedDomainObject {
     }
   }
 
-  public static Common computeCommon(final LastDivident divident, final TickerPrice price) throws NullPointerException {
-    return Common.compute(divident, price);
+  public static Common computeCommon(final LastDividend dividend, final TickerPrice price) throws NullPointerException {
+    return Common.compute(dividend, price);
   }
 
-  public static Preferred computePreferred(final FixedDivident divident, final ParValue parValue,
+  public static Preferred computePreferred(final FixedDividend dividend, final ParValue parValue,
       final TickerPrice price) throws NullPointerException {
-    return Preferred.compute(divident, parValue, price);
+    return Preferred.compute(dividend, parValue, price);
   }
 
   private DividendYield(final BigDecimal value) {
