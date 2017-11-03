@@ -44,14 +44,20 @@ public class DividendYield extends BigDecimalBasedDomainObject {
   @Immutable
   public static class Preferred extends DividendYield {
 
+    private static final BigDecimal HUNDRED = new BigDecimal(100);
+
     private static Preferred compute(final FixedDividend dividend, final ParValue parValue, final TickerPrice price)
         throws NullPointerException {
       Preconditions.checkNotNull(dividend);
       Preconditions.checkNotNull(parValue);
       Preconditions.checkNotNull(price);
 
+      /* The fixed dividend is in percentage */
+      final BigDecimal normalisedDivident = dividend.getValue().setScale(6, RoundingMode.HALF_UP)
+          .divide(Preferred.HUNDRED, RoundingMode.HALF_UP);
+
       /* TODO: check the rounding mechanism to be used */
-      final BigDecimal value = dividend.getValue().multiply(parValue.getValue()).setScale(4, RoundingMode.HALF_UP)
+      final BigDecimal value = normalisedDivident.multiply(parValue.getValue()).setScale(6, RoundingMode.HALF_UP)
           .divide(price.getValue(), RoundingMode.HALF_UP);
       return new Preferred(dividend, parValue, price, value);
     }

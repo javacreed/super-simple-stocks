@@ -25,7 +25,7 @@ public class TickerPrice extends BigDecimalBasedDomainObject {
   }
 
   public static TickerPrice random() {
-    return TickerPrice.of(new BigDecimal(Math.random() * 100).setScale(4, RoundingMode.HALF_UP));
+    return TickerPrice.of(new BigDecimal(Math.random() * 100).setScale(6, RoundingMode.HALF_UP));
   }
 
   private TickerPrice(final BigDecimal value) {

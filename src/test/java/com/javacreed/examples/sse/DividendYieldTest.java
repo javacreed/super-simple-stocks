@@ -35,7 +35,7 @@ public class DividendYieldTest {
   @Test
   public void computePreferred() {
     final List<String[]> list = new ArrayList<>();
-    list.add(new String[] { "0.02", "100", "100.61", "0.0199" });
+    list.add(new String[] { "2", "100", "100.61", "0.019879" });
 
     for (int i = 0, size = list.size(); i < size; i++) {
       final String[] values = list.get(i);

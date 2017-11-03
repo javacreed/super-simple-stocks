@@ -18,6 +18,7 @@ public class PeRatio extends BigDecimalBasedDomainObject {
       return new PeRatio(price, dividend, BigDecimal.ZERO);
     }
 
+    /* TODO: check the rounding mechanism to be used */
     final BigDecimal value = price.getValue().setScale(6, RoundingMode.HALF_UP).divide(dividend.getValue(),
         RoundingMode.HALF_UP);
     return new PeRatio(price, dividend, value);

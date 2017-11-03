@@ -31,6 +31,7 @@ public class GeometricMean extends BigDecimalBasedDomainObject {
      * to double.
      */
     final double mean = Math.pow(product.doubleValue(), 1.0 / count);
+    /* TODO: check the rounding mechanism to be used */
     final BigDecimal value = new BigDecimal(mean).setScale(6, RoundingMode.HALF_UP);
 
     return new GeometricMean(value);

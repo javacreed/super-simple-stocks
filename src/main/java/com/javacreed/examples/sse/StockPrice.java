@@ -30,9 +30,10 @@ public class StockPrice extends BigDecimalBasedDomainObject {
     }
 
     if (denominator == BigDecimal.ZERO) {
-      return StockPrice.ZERO;
+      return StockPrice.zero();
     }
 
+    /* TODO: check the rounding mechanism to be used */
     final BigDecimal value = nominator.setScale(6, RoundingMode.HALF_UP).divide(denominator, RoundingMode.HALF_UP);
     return new StockPrice(value);
   }
