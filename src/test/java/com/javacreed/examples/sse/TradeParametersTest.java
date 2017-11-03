@@ -55,6 +55,7 @@ public class TradeParametersTest {
   public void compareSame() {
     final TradeParameters a = TradeParameters.of(Quantity.of(1), Price.of("10.50"));
 
+    Assert.assertSame(a, a);
     Assert.assertEquals(a, a);
     Assert.assertEquals(a.hashCode(), a.hashCode());
     Assert.assertEquals(0, a.compareTo(a));
@@ -68,6 +69,7 @@ public class TradeParametersTest {
     final TradeParameters a = TradeParameters.of(time, quantity, price);
     final TradeParameters b = TradeParameters.of(time, quantity, price);
 
+    Assert.assertNotSame(a, b);
     Assert.assertEquals(a, b);
     Assert.assertEquals(b, a);
     Assert.assertEquals(a.hashCode(), b.hashCode());

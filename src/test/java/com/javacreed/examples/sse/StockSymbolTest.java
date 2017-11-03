@@ -26,6 +26,7 @@ public class StockSymbolTest {
   public void compareSame() {
     final StockSymbol a = StockSymbol.of("CSM");
 
+    Assert.assertSame(a, a);
     Assert.assertEquals(a, a);
     Assert.assertEquals(a.hashCode(), a.hashCode());
     Assert.assertEquals(0, a.compareTo(a));
@@ -36,6 +37,7 @@ public class StockSymbolTest {
     final StockSymbol a = StockSymbol.of("CSL");
     final StockSymbol b = StockSymbol.of("CSL");
 
+    Assert.assertNotSame(a, b);
     Assert.assertEquals(a, b);
     Assert.assertEquals(b, a);
     Assert.assertEquals(a.hashCode(), b.hashCode());
@@ -63,6 +65,7 @@ public class StockSymbolTest {
     inputs.add("T1"); /* Symbols do not contain numbers */
     inputs.add("Tö"); /* Symbols do not contain non-ASCII characters */
     inputs.add("ABCDEFG"); /* Symbols should not be longer than 6 letters */
+    inputs.add("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"); /* Test extreme value */
 
     for (final String input : inputs) {
       try {
@@ -71,6 +74,16 @@ public class StockSymbolTest {
       } catch (final IllegalArgumentException e) {
         /* Expected an exception */
       }
+    }
+  }
+
+  @Test
+  public void nullInputs() {
+    try {
+      StockSymbol.of(null);
+      Assert.fail("null should not be accepted as input");
+    } catch (final NullPointerException e) {
+      /* Expected an exception */
     }
   }
 

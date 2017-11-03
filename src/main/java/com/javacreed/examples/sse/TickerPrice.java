@@ -15,7 +15,7 @@ public class TickerPrice extends BigDecimalBasedDomainObject {
 
   public static TickerPrice of(final BigDecimal value) throws NullPointerException, IllegalArgumentException {
     Preconditions.checkNotNull(value);
-    Preconditions.checkArgument(value.compareTo(BigDecimal.ZERO) > 0); /* TODO: should we have an upper limit? */
+    Preconditions.checkArgument(value.compareTo(BigDecimal.ZERO) >= 0); /* TODO: should we have an upper limit? */
     return new TickerPrice(value);
   }
 

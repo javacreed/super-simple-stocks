@@ -73,6 +73,7 @@ public class TradeTest {
   public void compareSame() {
     final Trade a = Trade.buy(TradeParameters.of(Quantity.of(1), Price.of("10.50")));
 
+    Assert.assertSame(a, a);
     Assert.assertEquals(a, a);
     Assert.assertEquals(a.hashCode(), a.hashCode());
     Assert.assertEquals(0, a.compareTo(a));
@@ -84,6 +85,7 @@ public class TradeTest {
     final Trade a = Trade.buy(request);
     final Trade b = Trade.buy(request);
 
+    Assert.assertNotSame(a, b);
     Assert.assertEquals(a, b);
     Assert.assertEquals(b, a);
     Assert.assertEquals(a.hashCode(), b.hashCode());

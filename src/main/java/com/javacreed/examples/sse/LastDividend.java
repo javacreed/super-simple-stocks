@@ -11,10 +11,15 @@ public class LastDividend extends BigDecimalBasedDomainObject {
 
   private static final LastDividend ZERO = new LastDividend(BigDecimal.ZERO);
 
-  /* TODO: should we allow Zero and return the singleton instead? */
   public static LastDividend of(final BigDecimal value) throws NullPointerException, IllegalArgumentException {
     Preconditions.checkNotNull(value);
+    if (BigDecimal.ZERO.compareTo(value) == 0) {
+      return LastDividend.zero();
+    }
+
+    /* TODO: should we have an upper limit? */
     Preconditions.checkArgument(value.compareTo(BigDecimal.ZERO) > 0);
+
     return new LastDividend(value);
   }
 
