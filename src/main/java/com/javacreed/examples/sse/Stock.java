@@ -38,6 +38,11 @@ public abstract class Stock implements Iterable<Trade> {
     public LastDividend getDividend() {
       return dividend;
     }
+
+    @Override
+    public String toString() {
+      return symbol + " - Common Stock (Dividend: " + dividend + ")";
+    }
   }
 
   public static class Preferred extends Stock {
@@ -70,6 +75,11 @@ public abstract class Stock implements Iterable<Trade> {
     public ParValue getParValue() {
       return parValue;
     }
+
+    @Override
+    public String toString() {
+      return symbol + " - Preferred Stock (Dividend: " + dividend + " and Par Value: " + parValue + ")";
+    }
   }
 
   public static Common common(final StockSymbol symbol, final LastDividend dividend) throws NullPointerException {
@@ -81,7 +91,7 @@ public abstract class Stock implements Iterable<Trade> {
     return Preferred.of(symbol, dividend, parValue);
   }
 
-  private final StockSymbol symbol;
+  protected final StockSymbol symbol;
 
   private final List<Trade> trades = new ArrayList<>();
 

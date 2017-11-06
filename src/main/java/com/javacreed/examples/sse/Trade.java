@@ -22,6 +22,11 @@ public class Trade implements Comparable<Trade> {
     private Buy(final LocalDateTime time, final Quantity quantity, final Price price) {
       super(time, quantity, price);
     }
+
+    @Override
+    public String toString() {
+      return "Bought " + quantity + " at " + price + " on " + time;
+    }
   }
 
   public static class Sell extends Trade {
@@ -34,6 +39,11 @@ public class Trade implements Comparable<Trade> {
     private Sell(final LocalDateTime time, final Quantity quantity, final Price price) {
       super(time, quantity, price);
     }
+
+    @Override
+    public String toString() {
+      return "Sold " + quantity + " at " + price + " on " + time;
+    }
   }
 
   public static Buy buy(final TradeParameters parameters) throws NullPointerException {
@@ -44,9 +54,9 @@ public class Trade implements Comparable<Trade> {
     return Sell.of(parameters);
   }
 
-  private final LocalDateTime time;
-  private final Quantity quantity;
-  private final Price price;
+  protected final LocalDateTime time;
+  protected final Quantity quantity;
+  protected final Price price;
 
   protected Trade(final LocalDateTime time, final Quantity quantity, final Price price) {
     this.time = time;
